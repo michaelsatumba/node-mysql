@@ -1,5 +1,5 @@
 var http = require('http');
-var dt = require('./myfirstmodule');
+var dt = require('./datemodule');
 var url = require('url');
 var fs = require('fs');
 var mysql = require('mysql');
@@ -11,6 +11,10 @@ const router = express.Router();
 
 router.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname + '/mynewfile1.html'));
+});
+
+app.get('/styles.css', function (req, res) {
+	res.sendFile(__dirname + '/' + 'styles.css');
 });
 
 var con = mysql.createConnection({
@@ -45,10 +49,15 @@ con.connect(function (err) {
 		// console.log(res[0].first_name); // woo!
 		fs.writeFile(
 			'mynewfile1.html',
-			`<html>
+			`
+			<!DOCTYPE html>
+			<html>
+			<head>
+  <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
         <body>
-        <h1>Actors in 2006</h1>
-        <ul>
+        <h1 style="color:blue;">Actors in 2006</h1>
+        <div>
         ${sqlRes
 					.map(function (element) {
 						return (
@@ -63,7 +72,7 @@ con.connect(function (err) {
 						);
 					})
 					.join('')}
-        <ul>
+        <div>
         </body>
         </html>`,
 			function (err) {
