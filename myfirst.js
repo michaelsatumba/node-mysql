@@ -2,6 +2,10 @@ const http = require('http');
 const dt = require('./datemodule');
 const url = require('url');
 var fs = require('fs');
+var uc = require('upper-case');
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+var formidable = require('formidable');
 
 /*
 http
@@ -95,4 +99,104 @@ fs.writeFile('demofile3.txt', 'Hello content!', function (err) {
 	if (err) throw err;
 	console.log('Saved!');
 });
+*/
+
+//The fs.appendFile() method appends the specified content at the end of the specified file:
+/*
+fs.appendFile('demofile1.txt', ' This is my text.', function (err) {
+	if (err) throw err;
+	console.log('Updated!');
+});
+*/
+
+// The fs.writeFile() method replaces the specified file and content:
+/*
+fs.writeFile('demofile1.txt', 'This is my text', function (err) {
+	if (err) throw err;
+	console.log('Replaced!');
+});
+*/
+
+// The fs.unlink() method deletes the specified file:
+/*
+fs.unlink('demofile1.txt', function (err) {
+	if (err) throw err;
+	console.log('File deleted!');
+});
+*/
+
+// The fs.rename() method renames the specified file:
+/*
+fs.rename('myrenamedfile.txt', 'demo.txt', function (err) {
+	if (err) throw err;
+	console.log('File Renamed!');
+});
+*/
+
+// Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties:
+/*
+var adr = 'http://localhost:8080/default.htm?year=2022&month=september';
+var q = url.parse(adr, true);
+
+console.log(q.host); //returns 'localhost:8080'
+console.log(q.pathname); //returns '/default.htm'
+console.log(q.search); //returns '?year=2017&month=february'
+
+var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
+console.log(qdata.year); //returns '2022'
+*/
+
+// read file according to the filename passed in, if error write 404.
+/*
+http
+	.createServer(function (req, res) {
+		var q = url.parse(req.url, true);
+		var filename = '.' + q.pathname;
+		fs.readFile(filename, function (err, data) {
+			if (err) {
+				res.writeHead(404, { 'Content-Type': 'text/html' });
+				return res.end('404 Not Found');
+			}
+			res.writeHead(200, { 'Content-Type': 'text/html' });
+			res.write(data);
+			return res.end();
+		});
+	})
+	.listen(8080);
+*/
+
+// adding a module from 'upper-case' and including it in this file and using it
+/*
+http
+	.createServer(function (req, res) {
+		res.writeHead(200, { 'Content-Type': 'text/html' });
+		res.write(uc.upperCase('Hello World!'));
+		// res.write('Hello World!'.toUpperCase()); // works too
+		// res.write('Hello World!');
+		res.end();
+	})
+	.listen(8080);
+*/
+
+// to see if file exists?
+/*
+var rs = fs.createReadStream('./styles.css');
+rs.on('open', function () {
+	// console.log(rs);
+	console.log('The file is open');
+});
+*/
+
+// events
+/*
+//Create an event handler:
+var myEventHandler = function () {
+	console.log('I hear a scream!');
+};
+
+//Assign the event handler to an event:
+eventEmitter.on('scream', myEventHandler);
+
+//Fire the 'scream' event:
+eventEmitter.emit('screm');
 */
