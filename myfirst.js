@@ -6,6 +6,8 @@ var uc = require('upper-case');
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 var formidable = require('formidable');
+var nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
 
 /*
 http
@@ -280,3 +282,33 @@ http
 	})
 	.listen(8080);
 	*/
+
+// Now you are ready to send emails from your server.
+
+// Use the username and password from your selected email provider to send an email. This tutorial will show you how to use your Gmail account to send an email:
+/*
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'youremail@gmail.com',
+    pass: 'yourpassword'
+  }
+});
+
+var mailOptions = {
+  from: 'youremail@gmail.com',
+  to: 'myfriend@yahoo.com',
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy!'
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+*/
