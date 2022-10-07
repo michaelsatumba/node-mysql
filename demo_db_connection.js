@@ -90,7 +90,7 @@ database: `${process.env.DATABASE}`,
 
 // con.connect(function(err) {
 //     if (err) throw err;
-//     console.log("Connected!");
+//     console.log("Connected!"); //
 //     var sql = "INSERT INTO customers (name, address) VALUES ?";
 //     var values = [
 //       ['John', 'Highway 71'],
@@ -133,8 +133,162 @@ database: `${process.env.DATABASE}`,
 //     con.query("SELECT * FROM customers", function (err, result, fields) {
 //       if (err) throw err;
 //       console.log(result)
-//       console.log(result[0].name);
-//       console.log(fields);
-//       console.log(result.map(e => e.name + ' ' +  e.address + ' ' + e.id)) // map!
+//     //   console.log(result.length) // length
+//     //   console.log(result[0].name);
+//     //   console.log(fields);
+//     //   console.log(result.map(e => e.name + ' ' +  e.address + ' ' + e.id)) // map!
 //     });
 //   });
+
+// To select only some of the columns in a table, use the "SELECT" statement followed by the column name.
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT name, address FROM customers", function (err, result, fields) {
+//       if (err) throw err;
+//       console.log(result);
+//     });
+//   });
+
+  // As you can see from the result of the example above, the result object is an array containing each row as an object.
+
+// To return e.g. the address of the third record, just refer to the third array object's address property:
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT name, address FROM customers", function (err, result, fields) {
+//       if (err) throw err;
+//       console.log(result[2].address); // print address of third element
+//     });
+//   });
+
+// The third parameter of the callback function is an array containing information about each field in the result.
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT name, address FROM customers", function (err, result, fields) {
+//       if (err) throw err;
+//       console.log(fields);
+//       console.log(fields[1].name) // field name
+//     });
+//   });
+
+// When selecting records from a table, you can filter the selection by using the "WHERE" statement:
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT * FROM customers WHERE address = 'Park Lane 38'", function (err, result) {
+//       if (err) throw err;
+//       console.log(result);
+//     });
+//   });
+
+// You can also select the records that starts, includes, or ends with a given letter or phrase.
+
+// Use the '%' wildcard to represent zero, one or multiple characters:
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT * FROM customers WHERE address LIKE 'S%'", function (err, result) { // where address starts with an 'S'
+//       if (err) throw err;
+//       console.log(result);
+//     });
+//   });
+
+// When query values are variables provided by the user, you should escape the values.
+
+// This is to prevent SQL injections, which is a common web hacking technique to destroy or misuse your database.
+
+// The MySQL module has methods to escape query values:
+
+// var adr = 'Mountain 21';
+// var adr1 = 'Park Lane 38'
+// var sql = 'SELECT * FROM customers WHERE address = ' + mysql.escape(adr1);
+// con.query(sql, function (err, result) {
+//   if (err) throw err;
+//   console.log(result);
+// });
+
+// You can also use a ? as a placeholder for the values you want to escape.
+
+// In this case, the variable is sent as the second parameter in the query() method:
+// var adr = 'Mountain 21';
+// var sql = 'SELECT * FROM customers WHERE address = ?';
+// con.query(sql, [adr], function (err, result) {
+//   if (err) throw err;
+//   console.log(result);
+// });
+
+// If you have multiple placeholders, the array contains multiple values, in that order:
+
+// var name = 'Amy';
+// var adr = 'Mountain 21';
+// var sql = 'SELECT * FROM customers WHERE name = ? OR address = ?';
+// con.query(sql, [name, adr], function (err, result) {
+//   if (err) throw err;
+//   console.log(result);
+// });
+
+// Use the ORDER BY statement to sort the result in ascending or descending order.
+
+// The ORDER BY keyword sorts the result ascending by default. To sort the result in descending order, use the DESC keyword.
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT * FROM customers ORDER BY address DESC", function (err, result) {
+//       if (err) throw err;
+//       console.log(result);
+//     });
+//   });
+
+// You can delete records from an existing table by using the "DELETE FROM" statement:
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     var sql = "DELETE FROM customers WHERE address = 'Mountain 21'";
+//     con.query(sql, function (err, result) {
+//       if (err) throw err;
+//       console.log("Number of records deleted: " + result.affectedRows);
+//     });
+//   });
+
+// con.connect(function(err) {
+//     if (err) throw err;
+//     var sql = "DELETE FROM customers WHERE address = address";
+//     con.query(sql, function (err, result) {
+//       if (err) throw err;
+//       console.log("Number of records deleted: " + result.affectedRows);
+//     //   console.log(result)
+//     });
+//   });
+
+// COUNT
+// con.connect(function(err) {
+//         if (err) throw err;
+//         con.query("SELECT COUNT(*) FROM customers", function (err, result, fields) {
+//           if (err) throw err;
+//           console.log(result)
+//         });
+//       });
+
+// Delete duplicates // idk
+// con.connect(function(err) {
+//         if (err) throw err;
+//         // (SELECT id FROM customers GROUP BY id HAVING (COUNT(id) > 1))
+//         // con.query("DELETE FROM customers WHERE id IN (SELECT *, COUNT(*) FROM customers GROUP BY name HAVING COUNT (*) > 1)", function (err, result, fields) {
+//         //   if (err) throw err;
+//         // //   console.log(result)
+//         // });
+//         //  con.query("SELECT *, COUNT(*) FROM customers GROUP BY name HAVING COUNT (*) > 1", function (err, result, fields) {
+//         //     if (err) throw err;
+//         //     console.log(result)
+//         //   });
+//          con.query("DELETE FROM customers WHERE name = name", function (err, result, fields) {
+//           if (err) throw err;
+//         //   console.log(result)
+//         });
+//         con.query("SELECT * FROM customers", function (err, result, fields) {
+//             if (err) throw err;
+//             console.log(result)
+//           });
+//       });
