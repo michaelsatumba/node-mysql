@@ -272,8 +272,8 @@ database: `${process.env.DATABASE}`,
 //       });
 
 // Delete duplicates // idk
-con.connect(function(err) {
-        if (err) throw err;
+// con.connect(function(err) {
+//         if (err) throw err;
         // (SELECT id FROM customers GROUP BY id HAVING (COUNT(id) > 1))
         // con.query("DELETE FROM customers WHERE id IN (SELECT *, COUNT(*) FROM customers GROUP BY name HAVING COUNT (*) > 1)", function (err, result, fields) {
         //   if (err) throw err;
@@ -320,4 +320,28 @@ con.connect(function(err) {
         //     if (err) throw err;
         //     console.log(result)
         //   });
-      });
+      // });
+
+// Delete a Table
+// You can delete an existing table by using the "DROP TABLE" statement:
+
+// con.connect(function(err) {
+//   if (err) throw err;
+//   var sql = "DROP TABLE customers";
+//   con.query(sql, function (err, result) {
+//     if (err) throw err;
+//     console.log("Table deleted");
+//   });
+// });
+
+// Drop Only if Exist
+// If the the table you want to delete is already deleted, or for any other reason does not exist, you can use the IF EXISTS keyword to avoid getting an error.
+
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "DROP TABLE IF EXISTS customers";
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
+});
